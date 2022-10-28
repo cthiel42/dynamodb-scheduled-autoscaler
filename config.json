@@ -1,0 +1,50 @@
+[
+    {
+        "type": "table",
+        "resource": "table/table-name",
+        "defaultReadMin": 450,
+        "defaultReadMax": 5000,
+        "defaultWriteMin": 100,
+        "defaultWriteMax": 2000,
+        "intervals": [
+            {
+                "timeStart": "05:30:00",
+                "timeEnd": "07:00:00",
+                "readMin": 1500,
+                "writeMin": 400
+            }
+        ]
+    },
+    {
+        "type": "index",
+        "resource": "table/table-name/index/index-1",
+        "defaultReadMin": 30,
+        "defaultReadMax": 5000,
+        "defaultWriteMin": 15,
+        "defaultWriteMax": 2000,
+        "intervals": [
+            {
+                "timeStart": "05:30:00",
+                "timeEnd": "07:30:00",
+                "readMin": 200,
+                "writeMin": 50
+            }
+        ]
+    },
+    {
+        "type": "index",
+        "resource": "table/table-name/index/index-2",
+        "defaultReadMin": 40,
+        "defaultReadMax": 5000,
+        "defaultWriteMin": 10,
+        "defaultWriteMax": 2000,
+        "intervals": [
+            {
+                "timeStart": "08:00:00",
+                "timeEnd": "09:00:00",
+                "readMin": 300,
+                "writeMin": 40
+            }
+        ]
+    }
+]
