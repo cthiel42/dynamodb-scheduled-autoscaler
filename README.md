@@ -20,6 +20,7 @@ Configurations that need to be included in a setting:
 - intervals
   - timeStart: time the interval settings should take effect in UTC and format of HH:MM:SS (str)
   - timeEnd: time the interval settings should discontinue taking effect in UTC and format of HH:MM:SS (str)
+  - weekdays: (Optional) days of the week this interval should take effect. defaults to all days of the week. days are represented as integers where monday=0 and up to where sunday=6. this is based on python's built in datetime weekday function ([int])
   - readMin: (Optional) minimum read capacity to set while interval is in effect (int)
   - readMax: (Optional) maximum read capacity to set while interval is in effect (int)
   - writeMin: (Optional) minimum write capacity to set while interval is in effect (int)
