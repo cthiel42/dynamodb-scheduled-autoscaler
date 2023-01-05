@@ -18,20 +18,22 @@ def lambda_handler(event, context):
         writeMin = operation.get("defaultWriteMin")
         writeMax = operation.get("defaultWriteMax")
         currentTime = datetime.datetime.utcnow()
+        currentWeekday = currentTime.weekday()
         for interval in operation.get("intervals"):
             # Check whether we're in any intervals that will overwrite the existing capacity
             intervalStart = datetime.datetime.strptime(interval.get("timeStart"),"%H:%M:%S")
             intervalEnd = datetime.datetime.strptime(interval.get("timeEnd"),"%H:%M:%S")
+            intervalWeekdays = interval.get("weekdays", [0, 1 ,2 ,3, 4, 5, 6])
             intervalStart = intervalStart.replace(year=currentTime.year,month=currentTime.month,day=currentTime.day)
             intervalEnd = intervalEnd.replace(year=currentTime.year,month=currentTime.month,day=currentTime.day)
             
             # Currently won't handle overlapping intervals. Could write it in the future to take the greatest min/max values it sees
-            if intervalStart <= currentTime and currentTime < intervalEnd:
+            if intervalStart <= currentTime and currentTime < intervalEnd and currentWeekday in intervalWeekdays:
                 readMin = interval.get("readMin",readMin)
                 readMax = interval.get("readMax",readMax)
                 writeMin = interval.get("writeMin",writeMin)
                 writeMax = interval.get("writeMax",writeMax)
-            
+
         print("Determined the following values should be set: ")
         print("readMin: "+str(readMin))
         print("readMax: "+str(readMax))
@@ -47,7 +49,7 @@ def lambda_handler(event, context):
             ],
             MaxResults=10,
         )
-
+        
         if len(response.get("ScalableTargets",[])) == 1 and readMin != response.get("ScalableTargets")[0].get("MinCapacity") or readMax != response.get("ScalableTargets")[0].get("MaxCapacity"):
             print("Updating Read Capacity Units:")
             print("ReadMin: "+str(response.get("ScalableTargets")[0].get("MinCapacity")) + " -> " + str(readMin))
@@ -69,7 +71,7 @@ def lambda_handler(event, context):
             ],
             MaxResults=10,
         )
-
+        
         if len(response.get("ScalableTargets",[])) == 1 and writeMin != response.get("ScalableTargets")[0].get("MinCapacity") or writeMax != response.get("ScalableTargets")[0].get("MaxCapacity"):
             print("Updating Write Capacity Units:")
             print("WriteMin: "+str(response.get("ScalableTargets")[0].get("MinCapacity")) + " -> " + str(writeMin))
